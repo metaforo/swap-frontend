@@ -7,6 +7,8 @@ import Pool from "./component/Pool";
 import HomeLayout from "./component/HomeLayout";
 import { StyledEngineProvider } from '@mui/material/styles';
 import '../src/css/Common.css';
+import { ApolloProvider } from '@apollo/client';
+import client from './apollo-client';
 
 import {
     createBrowserRouter,
@@ -29,11 +31,13 @@ const router = createBrowserRouter(
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
-      <StyledEngineProvider injectFirst>
-            <RouterProvider router={router} />
-      </StyledEngineProvider>
-  </React.StrictMode>
+    <React.StrictMode>
+        <ApolloProvider client={client}>
+            <StyledEngineProvider injectFirst>
+                <RouterProvider router={router} />
+            </StyledEngineProvider>
+        </ApolloProvider>
+    </React.StrictMode>,
 );
 
 // If you want to start measuring performance in your app, pass a function
