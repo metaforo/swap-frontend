@@ -9,6 +9,8 @@ import { StyledEngineProvider } from '@mui/material/styles';
 import '../src/css/Common.css';
 import { ApolloProvider } from '@apollo/client';
 import client from './apollo-client';
+import { StarknetProvider } from "./component/starknet-provider";
+
 
 import {
     createBrowserRouter,
@@ -27,6 +29,7 @@ const router = createBrowserRouter(
     )
 );
 
+
 // <link href="https://fonts.cdnfonts.com/css/big-shot" rel="stylesheet">
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -34,7 +37,9 @@ root.render(
     <React.StrictMode>
         <ApolloProvider client={client}>
             <StyledEngineProvider injectFirst>
-                <RouterProvider router={router} />
+                <StarknetProvider>
+                    <RouterProvider router={router} />
+                </StarknetProvider>
             </StyledEngineProvider>
         </ApolloProvider>
     </React.StrictMode>,
