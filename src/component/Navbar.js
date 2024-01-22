@@ -3,12 +3,14 @@ import InstarSwap from '../asset/InstarSwap.png';
 import NavbarCss from '../css/Navbar.module.css';
 import Login from './Login';
 import { useNavigate } from "react-router-dom";
+import { useAccount } from '@starknet-react/core'; // Import the useAccount hook
 
 const Navbar = () => {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const navigate = useNavigate();
+    const { address } = useAccount(); // Retrieve the connected wallet address
 
     return (
         <>
@@ -52,8 +54,14 @@ const Navbar = () => {
                             </defs>
                         </svg>
 
-                        <span className={'cursor'} onClick={handleOpen} >Connect Wallet</span>
-
+                        {address ? (
+                            <span className={'cursor'}>{`Connected: ${address}`}</span>
+                        ) : (
+                            <>
+                                <svg /* SVG contents truncated for brevity */></svg>
+                                <span className={'cursor'} onClick={handleOpen}>Connect Wallet</span>
+                            </>
+                        )}
                     </div>
                 </div>
             </div>

@@ -1,10 +1,14 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 // import { Link, useNavigate, Outlet, NavLink } from "react-router-dom";
 import PollCss from '../css/Pool.module.css';
 import { styled } from '@mui/material/styles';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
+import { useQuery } from '@apollo/client';
+import LiquidityList from './Query';
+import { useAccount, useConnectors } from "@starknet-react/core";
+
 
 interface StyledTabsProps {
     children?: React.ReactNode;
@@ -51,7 +55,12 @@ const StyledTab = styled((props: StyledTabProps) => (
 
 const Pool = () => {
 
-    const [value, setValue] = React.useState(0);
+    const [value, setValue] = useState(0);
+    const { address } = useAccount();
+
+
+    // Here you'll use the LiquidityList component
+    // which in turn uses the Apollo useQuery hook to fetch real data
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
@@ -92,50 +101,10 @@ const Pool = () => {
                         </Box>
 
 
-                                <div className={PollCss.pollList}>
-                                    <div className={`${PollCss.pollListTitle} ${PollCss.pollListItem}`}>
+                        {/* Include your LiquidityList component */}
+                        {value === 0 && <LiquidityList account={address}  />}
+                        {/* Render a different component or content when value is not 0 */}
 
-                                        <div className={PollCss.pollListItem1}>
-                                            Name
-                                        </div>
-                                        <div className={PollCss.pollListItem2}>
-                                            Liquidity
-                                        </div>
-                                        <div className={PollCss.pollListItem3}>
-                                            ADD
-                                        </div>
-
-                                    </div>
-
-
-                                    {list.map((item, index) => {
-                                            return   (
-
-                                                <div key={index} className={`${PollCss.pollListContent}  ${PollCss.pollListItem}`}>
-
-                                                    <div className={PollCss.pollListItem1}>
-                                                        {item.name}
-                                                    </div>
-                                                    <div className={PollCss.pollListItem2}>
-                                                        $ {item.liq}
-                                                    </div>
-                                                    <div className={PollCss.pollListItem3}>
-                                                        Add Liquidity
-                                                    </div>
-
-                                                </div>
-
-                                            )
-                                        }
-
-                                    )}
-
-
-                                </div>
-
-                        <div>
-
-                        </div>
                     </Box>
                 </div>
 
