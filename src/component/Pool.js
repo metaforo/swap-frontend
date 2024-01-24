@@ -1,10 +1,14 @@
-import * as React from 'react';
+import React , { useEffect }  from "react";
 // import { Link, useNavigate, Outlet, NavLink } from "react-router-dom";
 import PollCss from '../css/Pool.module.css';
 import { styled } from '@mui/material/styles';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
+import { useQuery, gql } from "@apollo/client";
+import {useAccount, useConnect, useDisconnect} from "@starknet-react/core";
+import gqlClient from "../util/gqlClient";
+import http from "../util/http";
 
 interface StyledTabsProps {
     children?: React.ReactNode;
@@ -47,7 +51,15 @@ const StyledTab = styled((props: StyledTabProps) => (
     '&.Mui-focusVisible': {
         backgroundColor: '#16E76D',
     },
-}));
+}))
+
+// const FILMS_QUERY = gql`
+//   {
+//   list_liquidity(account:"0x0112C1E020708b84aaC85983734A6ffB5fCe89891e8414e4E54F94CE75c06a90"){
+//      token_id
+//   }
+// }
+// `;
 
 const Pool = () => {
 
@@ -57,6 +69,8 @@ const Pool = () => {
         setValue(newValue);
     };
 
+    const { address,account } = useAccount();
+
     const [list, setList] = React.useState([
         { name : 'ETH - USDC', liq : '243243.1231'  },
         { name : 'ETH - USDC', liq : '321321.3232'  },
@@ -64,6 +78,46 @@ const Pool = () => {
         { name : 'ETH - USDC', liq : '243243.3243'  },
         { name : 'ETH - USDC', liq : '65466.645'  }
     ])
+
+    useEffect(() => {
+
+
+        const GET_LIST_LIQUIDITY_QUERY = gql`
+  query getListLiquidity($account: String!) {
+    list_liquidity(account: $account) {
+      token_id
+    }
+  }
+`
+
+         http.post('https://instaswap-api.metaforo.io/query',{
+             "query": "query getListLiquidity {\n  list_liquidity(account:\"0x0112C1E020708b84aaC85983734A6ffB5fCe89891e8414e4E54F94CE75c06a90\"){\n     token_id\n  }\n}",
+             "operationName": "getListLiquidity"
+         }).then( response => {
+            // const responseData = response?.data;
+            console.log(response);
+        } )
+
+
+
+
+        // gqlClient.query({
+        //     query: GET_LIST_LIQUIDITY_QUERY,
+        //     variables: {
+        //         account: "0x0112C1E020708b84aaC85983734A6ffB5fCe89891e8414e4E54F94CE75c06a90"
+        //     }
+        // }).then(response => {
+        //     // 处理响应数据
+        //     console.log(response.data);
+        // }).catch(error => {
+        //     // 处理错误情况
+        //     console.error(error);
+        // });
+
+
+
+    }, [value]);
+
 
     return (
         <>

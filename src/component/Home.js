@@ -4,6 +4,7 @@ import HomeCss from '../css/Home.module.css';
 import QuantityInput from "./QuantityInput";
 import ETH from '../asset/ETH.png';
 import SelectNFT from "./SelectNFT";
+import SwapWrap from "./SwapWrap";
 
 const Home = () => {
 
@@ -104,6 +105,8 @@ const Home = () => {
                 </div>
 
                 <SelectNFT open={open} handleClose={handleClose}></SelectNFT>
+
+                <SwapWrap/>
 
             </div>
         </>

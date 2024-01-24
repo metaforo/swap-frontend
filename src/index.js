@@ -15,6 +15,14 @@ import {
     RouterProvider,
 } from "react-router-dom";
 
+import {
+    StarknetConfig,
+    publicProvider,
+    argent,
+    braavos,
+} from "@starknet-react/core";
+import {mainnet, goerli} from "@starknet-react/chains";
+
 const router = createBrowserRouter(
     createRoutesFromElements(
         <Route path="/" element={<HomeLayout />}>
@@ -25,13 +33,22 @@ const router = createBrowserRouter(
     )
 );
 
+const chains = [goerli];
+const provider = publicProvider();
+const connectors = [braavos(), argent()];
+
+
 // <link href="https://fonts.cdnfonts.com/css/big-shot" rel="stylesheet">
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
       <StyledEngineProvider injectFirst>
+          <StarknetConfig
+              chains={chains} provider={provider} connectors={connectors} autoConnect={true}
+          >
             <RouterProvider router={router} />
+          </StarknetConfig>
       </StyledEngineProvider>
   </React.StrictMode>
 );

@@ -3,12 +3,15 @@ import InstarSwap from '../asset/InstarSwap.png';
 import NavbarCss from '../css/Navbar.module.css';
 import Login from './Login';
 import { useNavigate } from "react-router-dom";
+import {useAccount, useConnect, useDisconnect} from "@starknet-react/core";
 
 const Navbar = () => {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const navigate = useNavigate();
+
+    const { address,account } = useAccount();
 
     return (
         <>
@@ -35,6 +38,8 @@ const Navbar = () => {
 
                     <div className={NavbarCss.connectWallet}>
 
+
+
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <g clip-path="url(#clip0_214_70)">
                                 <g clip-path="url(#clip1_214_70)">
@@ -51,8 +56,10 @@ const Navbar = () => {
                                 </clipPath>
                             </defs>
                         </svg>
+                        {
+                            address && account ? (<span>{address.slice(0, 6)}...{address.slice(-4)}</span>) :   <span className={'cursor'} onClick={handleOpen} >Connect Wallet</span>
+                        }
 
-                        <span className={'cursor'} onClick={handleOpen} >Connect Wallet</span>
 
                     </div>
                 </div>

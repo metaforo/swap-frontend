@@ -1,23 +1,29 @@
-import React , { useEffect }  from "react";
+import React , { useEffect, useMemo }  from "react";
 import LoginCss from '../css/Login.module.css';
 // import Box from '@mui/material/Box';
 // import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import argentx from '../asset/argentx.png';
 import braavos from '../asset/braavos.png';
-import { connect, disconnect } from 'starknetkit'
+
+import { useConnect, Connector,useAccount,useDisconnect,useSignTypedData } from "@starknet-react/core";
+
+import { Provider, constants, cairo } from "starknet";
 
 const Login = (props) => {
 
-    const connectArgentXWallet = async() => {
-        const connection = await connect({webWalletUrl: "https://web.argent.xyz"});
 
-        if(connection && connection.isConnected) {
-            // setConnection(connection)
-            // setProvider(connection.account)
-            // setAddress(connection.selectedAddress)
-        }
+    const { connectAsync, connectors ,connect} = useConnect();
+    const { address,account } = useAccount();
+
+    const login = async(connector) => {
+
+        const connection = await connectAsync({connector});
+
+
+
     }
+
 
     useEffect(() => {
 
@@ -26,7 +32,6 @@ const Login = (props) => {
         }
 
     }, [props.open]);
-
 
     return (
         <>
@@ -39,25 +44,27 @@ const Login = (props) => {
                 <div className={LoginCss.modalBox}>
                     <div className={LoginCss.boxContent}>
                         <div>Connet a Wallet</div>
-                        <div className={`${LoginCss.button} cursor`} onClick={connectArgentXWallet}>
-                            <img src={argentx} style={{width:'24px'}}  alt="argentx" />
-                           <div>
-                               Argent-X
-                           </div>
-                            <div style={{width:'24px',height:'100%'}}>
 
-                            </div>
-                        </div>
+                        {
+                            connectors.map((connector) => (
+                                <div className={`${LoginCss.button} cursor`}   onClick={
+                                    e => {
+                                    e.preventDefault();
+                                    login(connector).then(()=>{
 
-                        <div className={`${LoginCss.button} cursor`}>
-                            <img src={braavos} style={{width:'24px'}}  alt="braavos" />
-                           <div>
-                               Braavos
-                           </div>
-                            <div style={{width:'24px',height:'100%'}}>
+                                    } );
 
-                            </div>
-                        </div>
+                                }}>
+                                    <img src={connector.name == 'Argent' ? argentx:braavos} style={{width:'24px'}}  alt=" {connector.name}" />
+                                    <div>
+                                        {connector.name}
+                                    </div>
+                                    <div style={{width:'24px',height:'100%'}}>
+
+                                    </div>
+                                </div>
+                            ))
+                        }
 
                     </div>
 

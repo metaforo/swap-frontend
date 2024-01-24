@@ -1,0 +1,10 @@
+{
+  "env": {
+    "es2021": true, // 这会自动启用对 ES2021 中新特性的支持，包括 BigInt。
+    "browser": true,
+    "node": true
+  },
+  "parserOptions": {
+    "ecmaVersion": 12 // 12 代表 ES2021
+  }
+}
