@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useImperativeHandle } from 'react';
 import {
     Unstable_NumberInput as BaseNumberInput,
     NumberInputProps,
@@ -9,8 +10,18 @@ const NumberInput = React.forwardRef(function CustomNumberInput(
     props: NumberInputProps,
     ref: React.ForwardedRef<HTMLDivElement>,
 ) {
+
+    const [value, setValue] = React.useState(0);
+
+  useImperativeHandle(ref, () => ({
+    getValue: () => {
+      return value;
+    }
+  }));
+
     return (
         <BaseNumberInput
+            onChange={(event, newValue) => setValue(newValue)}
             slots={{
                 root: StyledInputRoot,
                 input: StyledInput,
@@ -37,9 +48,23 @@ const NumberInput = React.forwardRef(function CustomNumberInput(
     );
 });
 
-export default function QuantityInput(props) {
-    return <NumberInput aria-label="Quantity Input" min={1} max={props.max} defaultValue={0} />;
-}
+//export default function QuantityInput(props) {
+//    return <NumberInput aria-label="Quantity Input"
+//    ref={ref}
+//    min={1} max={props.max} defaultValue={0} />;
+//}
+
+const QuantityInput = React.forwardRef(({ max }, ref) => (
+    <NumberInput
+        aria-label="Quantity Input"
+        ref={ref}
+        min={1}
+        max={max}
+        defaultValue={0}
+    />
+));
+
+export default QuantityInput;
 
 const StyledInputRoot = styled('div')(
     ({ theme }) => `

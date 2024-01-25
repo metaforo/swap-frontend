@@ -33,6 +33,10 @@ const Login = (props) => {
 
     }, [props.open]);
 
+
+
+
+
     return (
         <>
             <Modal
@@ -51,7 +55,7 @@ const Login = (props) => {
                                     e => {
                                     e.preventDefault();
                                     login(connector).then(()=>{
-
+                                        props.handleClose()
                                     } );
 
                                 }}>
